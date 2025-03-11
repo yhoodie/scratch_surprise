@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>scratch</title>
+		<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+			img{
+				width: 500px;
+				height: 300px;
+				left: 100px;
+				position: absolute;
+				z-index: -1;
+			}
+			canvas{
+				margin-left:100px;
+			}
+		</style>
+	</head>
+	<body>
+		<noscript>
+			<style>
+				.no-js-message {
+					display: block;
+				}
+				img, canvas {
+					display: none;
+				}
+			</style>
+			<div class="no-js-message">
+				您的浏览器不支持 JavaScript，请更换浏览器以查看此内容。
+			</div>
+		</noscript>
+		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAEKCAIAAAB10332AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEH0lEQVR4nO3XQRECMQAEwYRCGJIOJWcpzkBD+KSG6lawv6md41oDAGoepwcAwC8EDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMgScAASBIwAJIEDIAkAQMg6Xl6ABs+9+v0BPhn871OT2CDBwZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJAgZAkoABkCRgACQJGABJc1zr9AYA2OaBAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQJKAAZAkYAAkCRgASQIGQNIXb4IHdVrDYwkAAAAASUVORK5CYII="/>
+		<canvas id="canvas" width="500" height="300"></canvas>
+	</body>
+	<script type="text/javascript">
+		// All for New.
+		const canvas = document.getElementById('canvas');
+		const context = canvas.getContext('2d');
+
+		let isDrawing = false;
+		let lastX = 0;
+		let lastY = 0;
+		let lastMidX = 0;
+		let lastMidY = 0;
+
+		context.beginPath();
+		context.fillStyle= 'grey'
+		context.fillRect(110,140,270,100);
+
+		function startDrawing(x, y) {
+			isDrawing = true;
+			[lastX, lastY] = [x, y];
+			[lastMidX, lastMidY] = [x, y];
+		}
+
+		function draw(x, y) {
+			if (!isDrawing) return;
+
+			const midX = (lastX + x) / 2;
+			const midY = (lastY + y) / 2;
+
+			context.globalCompositeOperation = 'destination-out';
+			context.beginPath();
+			context.moveTo(lastMidX, lastMidY);
+			context.quadraticCurveTo(lastX, lastY, midX, midY);
+			context.lineWidth = 30; // 设置擦除线条的宽度
+			context.lineCap = 'round'; // 设置线条末端为圆形
+			context.stroke();
+
+			[lastX, lastY] = [x, y];
+			[lastMidX, lastMidY] = [midX, midY];
+		}
+
+		function stopDrawing() {
+			isDrawing = false;
+		}
+
+		// 处理鼠标事件，适配 PC 端
+		canvas.addEventListener('mousedown', (e) => {
+			startDrawing(e.offsetX, e.offsetY);
+		});
+
+		canvas.addEventListener('mousemove', (e) => {
+			draw(e.offsetX, e.offsetY);
+		});
+
+		canvas.addEventListener('mouseup', stopDrawing);
+		canvas.addEventListener('mouseout', stopDrawing);
+
+		// 处理触摸事件，适配移动端
+		canvas.addEventListener('touchstart', (e) => {
+			e.preventDefault();
+			const touch = e.touches[0];
+			const x = touch.clientX - canvas.offsetLeft;
+			const y = touch.clientY - canvas.offsetTop;
+			startDrawing(x, y);
+		});
+
+		canvas.addEventListener('touchmove', (e) => {
+			e.preventDefault();
+			const touch = e.touches[0];
+			const x = touch.clientX - canvas.offsetLeft;
+			const y = touch.clientY - canvas.offsetTop;
+			draw(x, y);
+		});
+
+		canvas.addEventListener('touchend', (e) => {
+			e.preventDefault();
+			stopDrawing();
+		});
+
+		canvas.addEventListener('touchcancel', (e) => {
+			e.preventDefault();
+			stopDrawing();
+		});
+		</script>
+</html>
